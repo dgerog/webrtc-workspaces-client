@@ -110,13 +110,11 @@ class webRTCWorkspacesTheme {
                     if (window.webRTCWorkspaces.isOwner()) {
                         if (confirm('This will end your call and destroy this workspace permanently. Proceed?')) {
                             window.webRTCWorkspaces.destroyWorkspace();
-                            $("#moreOptionsModal").modal("hide");
                         }
                     }
                     else {
                         if (confirm('Exit this workspace? While it is active, you can join it again.')) {
                             window.webRTCWorkspaces.leaveWorkspace();
-                            $("#moreOptionsModal").modal("hide");
                         }
                     }
                 };
@@ -128,7 +126,6 @@ class webRTCWorkspacesTheme {
                         if (elem.setSelectionRange)
                             elem.setSelectionRange(0, 99999);
                     document.execCommand("copy");
-                    $("#moreOptionsModal").modal("hide");
                     if (window.webRTCWorkspaces.debug) {
                         console.log('Workspace Invitation URL');
                         console.log($('#wsToken').val());
