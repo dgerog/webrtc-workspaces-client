@@ -267,7 +267,6 @@ class webRTCWorkspacesTheme {
             `
                 <video
                     id='${args.attendee.id}-video-frame:video-object'
-                    muted='${args.muteState}'
                     class='video-frame-video'
                     autoPlay
                     playsInline

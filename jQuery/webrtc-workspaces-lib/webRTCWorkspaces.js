@@ -1219,7 +1219,6 @@ class webRTCWorkspaces {
         //(that will be atached later, once the p2p connection is established)
         const args = {
             attendee: attendee,
-            muteState: attendee.id == this.attendee.id, //in case a video frame for local host is created mute it
             camState: true, 
         };
         const videoHolder = this._consumeCallback("video-frame-render", args);
