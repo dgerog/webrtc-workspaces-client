@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" href="assets/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="author"
+      content="Demetris Gerogiannis (DpG)"
+    />
+    <meta
+      name="description"
+      content="webRTCWorkspaces - An all-in-one JS framework for fast and efficient development of video apps."
+    />
+
+    <title>webRTCWorkspaces, Client Demo</title>
+    
+    <!-- Include 3rd party libs required to run webRTC -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
+    <!-- Load libs -->
+    <script src="webrtc-workspaces-lib/webRTCWorkspaces.js"></script> <!-- CORE :: Local OR from CDN -->
+    <script src="webrtc-workspaces-lib/webRTCWorkspacesClient.js"></script> <!-- CLIENT :: Local OR from CDN -->
+
+    <!-- Load the theme -->
+    <script src="webrtc-workspaces-lib/theme/default/index.js"></script> <!-- THEMING :: Local OR from CDN -->
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <script>
+      //1. initialize core module
+      window.webRTCWorkspaces = new webRTCWorkspaces({
+        doStorage: true,
+        debug: true, // activate debug mode
+        signalingServer: "https://webrtc-workspaces-signaling.herokuapp.com", //IMPORTANT: Replace with your configuration
+        //signalingServer: "http://localhost:9090", //Use this URL if you are testing locally with the signaling server
+      });
+      //2. start the client
+      const theTheme = new webRTCWorkspacesTheme();
+      //3, load the theme
+      webRTCWorkspacesInitClient(theTheme);
+    </script>    
+  </body>
+</html>
