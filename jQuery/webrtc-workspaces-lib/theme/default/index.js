@@ -173,6 +173,10 @@ class webRTCWorkspacesTheme {
     renderCanvas() {
         return (
             `
+                <!-- LOADER -->
+                <div id="spinner-back"></div>
+                <div id="spinner-front"><div class="spinner-grow text-light" style="width: 5rem; height: 5rem;"><span class="sr-only">Loading...</span></div></div>
+
                 <!-- TOASTS -->
                 <div aria-live="polite" aria-atomic="true" class="position-relative" style="z-index:10000"><div class="toast-container position-absolute end-0 top-0 p-3"></div></div>
 
@@ -296,18 +300,6 @@ class webRTCWorkspacesTheme {
                 </div>
             `
         );
-    };    
-    renderLoading() {
-        return(
-            `
-            `
-        );
-    }; 
-    renderUnloading() {
-        return(
-            `
-            `
-        );
     };
 
 
@@ -319,6 +311,14 @@ class webRTCWorkspacesTheme {
             toast.innerHTML = this.renderAlert(message);
         document.querySelector('.toast-container').appendChild(toast);
         $('.toast').toast('show');
+    };
+    doLoading() {
+        document.getElementById("spinner-back").classList.add("show");
+        document.getElementById("spinner-front").classList.add("show");
+    };
+    doLoaded() {
+        document.getElementById("spinner-back").classList.remove("show");
+        document.getElementById("spinner-front").classList.remove("show");
     }
 };
 

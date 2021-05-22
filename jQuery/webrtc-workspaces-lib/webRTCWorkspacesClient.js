@@ -276,7 +276,7 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['loading'],
         () => {
-            
+            themeClass.doLoading();
         }
     );
 
@@ -284,7 +284,7 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['loaded'],
         () => {
-            
+            themeClass.doLoaded();
         }
     );
 
