@@ -11,7 +11,7 @@ class webRTCWorkspacesTheme {
             replace the earlier in the append order.
         */
         return([
-            "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css",
+            "https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css",
             "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css",
             "webrtc-workspaces-lib/theme/default/default.css",
         ]);
@@ -25,7 +25,7 @@ class webRTCWorkspacesTheme {
         */
         return([
             "https://code.jquery.com/jquery-3.5.1.slim.min.js",
-            "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js",
+            "https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js",
         ]);
     };
 
@@ -173,6 +173,9 @@ class webRTCWorkspacesTheme {
     renderCanvas() {
         return (
             `
+                <!-- TOASTS -->
+                <div aria-live="polite" aria-atomic="true" class="position-relative" style="z-index:10000"><div class="toast-container position-absolute end-0 top-0 p-3"></div></div>
+
                 <!-- ROUTE :: Welcome -->
                 <div id='welcome' class='active-route'>
                     <br/><br/>
@@ -267,6 +270,7 @@ class webRTCWorkspacesTheme {
             `
                 <video
                     id='${args.attendee.id}-video-frame:video-object'
+                    ${args.muteState ? 'muted' : ''}
                     class='video-frame-video'
                     autoPlay
                     playsInline
@@ -282,16 +286,12 @@ class webRTCWorkspacesTheme {
     renderAlert(message) {
         return(
             `
-                <div class='toast' role='alert' aria-live='assertive' aria-atomic='true'>
-                    <div class='toast-header'>
-                        <strong class='mr-auto'>webRTCWorkpaces</strong>
-                        <small class='text-muted'>&nbsp;</small>
-                        <button type='button' class='ml-2 mb-1 close' data-dismiss='toast' aria-label='Close'>
-                        <span aria-hidden='true'>&times;</span>
-                        </button>
-                    </div>
-                    <div class='toast-body'>
-                        ${message}
+                <div class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-autohise="true" data-bs-delay="5000" style="margin-bottom:7px;">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
                 </div>
             `
@@ -309,6 +309,17 @@ class webRTCWorkspacesTheme {
             `
         );
     };
+
+
+    //
+    // Basic/Default functionalities
+    //
+    doAlert(message)  {
+        const toast = document.createElement('span');
+            toast.innerHTML = this.renderAlert(message);
+        document.querySelector('.toast-container').appendChild(toast);
+        $('.toast').toast('show');
+    }
 };
 
 //

@@ -48,7 +48,7 @@ function webRTCWorkspacesInitClient(themeClass) {
             js.innerHTML = themeClass.exportControllers();
         document.getElementsByTagName('body')[0].appendChild(js);
     });
-
+    
     //
     // REGISTER THE RELATED webRTCWorkspaces RENDERING CALLBACKS (=> TEMPLATE PARTS DEFINITION)
     //
@@ -75,7 +75,7 @@ function webRTCWorkspacesInitClient(themeClass) {
             }
             else {
                 //1. does not exist ~ create & append
-                vf = document.createElement('div'); //reactJS cheat
+                vf = document.createElement('div');
                     vf.id = args.attendee.id + "-video-frame"; //IMPORTANT: ID should follow this format!!!!
                     vf.className = "video-frame";
                     vf.innerHTML = themeClass.renderVideoFrame(args);
@@ -94,7 +94,7 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['alert'],
         (message) => {
-            alert (message);
+            themeClass.doAlert(message);
         }
     );
 
@@ -172,7 +172,7 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['busy'],
         (callee) => {
-            alert(callee.name + ' is busy :-(');
+            themeClass.doAlert(callee.name + ' is busy :-(');
         }
     );
 
@@ -180,7 +180,7 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['attendee-joined'],
         (attendee) => {
-            alert (attendee.name + " joined the workspace.");
+            themeClass.doAlert(attendee.name + " joined the workspace.");
             //a new video frame is created - redraw to adapt the width & height
             if (typeof redrawVideoFrames === "function")
                 redrawVideoFrames();
@@ -200,7 +200,7 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['attendee-left'],
         (attendee) => {
-            alert (attendee.name + " left the workspace.");
+            themeClass.doAlert(attendee.name + " left the workspace.");
             //a video frame is removed - redraw to adapt the width & height
             if (typeof redrawVideoFrames === "function")
                 redrawVideoFrames();
@@ -252,7 +252,7 @@ function webRTCWorkspacesInitClient(themeClass) {
                 console.log('--------------------------------');
             }
             if (window.location.hash === 'welcome') {
-                alert('This workspace is terminated by the administrator.');
+                themeClass.doAlert('This workspace is terminated by the administrator.');
             }
             //move to welcome route
             window.location.hash = 'welcome';
@@ -296,7 +296,7 @@ function webRTCWorkspacesInitClient(themeClass) {
                 console.log('Workspace is Full...');
                 console.log('--------------------------------');
             }          
-            alert ("Workspace if full! Cannot join.");
+            themeClass.doAlert("Workspace if full! Cannot join.");
             //workspace is full -> reroute back to index page
             window.location.hash = 'welcome';
         }
