@@ -85,7 +85,7 @@ class webRTCWorkspacesTheme {
                     const joinWSPin = $('#join-ws-pin').val();
                     if (!joinWSToken.length || joinWSToken.length <= 50) {
                         alert('Please enter a valid workspace token.');
-                        $('#create-ws-name').focus();
+                        $('#join-ws-token').focus();
                         return;
                     }
                     if (joinWSPin.length && joinWSPin.length != 5) {
