@@ -860,7 +860,7 @@ class webRTCWorkspaces {
                 this._consumeCallback("attendee-joined", data);
                 this._consumePluginCallback("attendee-joined", data);
 
-                if (thiss.debug) {
+                if (this.debug) {
                     console.log('Attendee Joined the workspace...');
                     console.log('I am: ' + this.attendee.name);
                     console.log('New Attendee: ' + data.name);
