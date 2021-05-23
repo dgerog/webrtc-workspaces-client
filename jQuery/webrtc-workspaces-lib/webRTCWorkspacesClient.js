@@ -182,10 +182,16 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['attendee-joined'],
         (attendee) => {
-            themeClass.doAlert(attendee.name + " joined the workspace.");
+            themeClass.doAlert(attendee.name + " joined the workspace.", false);
             //a new video frame is created - redraw to adapt the width & height
             if (typeof redrawVideoFrames === "function")
                 redrawVideoFrames();
+
+            //play sound
+            if (window.canPlaySound) {
+                const audioElem = document.querySelector('#joinSnd');
+                audioElem && audioElem.play();
+            }
         }
     );
 
@@ -193,10 +199,16 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['attendee-left'],
         (attendee) => {
-            themeClass.doAlert(attendee.name + " left the workspace.");
+            themeClass.doAlert(attendee.name + " left the workspace.", false);
             //a video frame is removed - redraw to adapt the width & height
             if (typeof redrawVideoFrames === "function")
-                redrawVideoFrames();               
+                redrawVideoFrames(); 
+            
+            //play sound
+            if (window.canPlaySound) {
+                const audioElem = document.querySelector('#leftSnd');
+                audioElem && audioElem.play();
+            }
         }
     );
 
@@ -205,7 +217,14 @@ function webRTCWorkspacesInitClient(themeClass) {
         ['attendee-kicked'],
         (attendee) => {
             if (attendee.iWasKicked) {
-                themeClass.doAlert("You were kicked out by the admin.");
+                themeClass.doAlert("You were kicked out by the admin.", false);
+                
+                //play sound
+                if (window.canPlaySound) {
+                    const audioElem = document.querySelector('#kickedSnd');
+                    audioElem && audioElem.play();
+                }                
+                
                 //move to welcome route
                 window.location.hash = 'welcome';
             }
@@ -224,6 +243,13 @@ function webRTCWorkspacesInitClient(themeClass) {
         (data) => {
             //move to workspace route
             window.location.hash = 'workspace';
+
+            //play sound
+            if (window.canPlaySound) {
+                const audioElem = document.querySelector('#joinSnd');
+                audioElem && audioElem.play();
+            }
+
             setTimeout(() => {
                 //set a delay to load the route - give some time for page rendering and then, start the call 
                 window.webRTCWorkspaces.startCall();
@@ -239,6 +265,12 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['workspace-joined'],
         (data) => {
+            //play sound
+            if (window.canPlaySound) {
+                const audioElem = document.querySelector('#joinSnd');
+                audioElem && audioElem.play();
+            }
+
             //move to workspace route
             window.location.hash = 'workspace';
         }
@@ -248,8 +280,14 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['workspace-destroyed'],
         () => {
-            themeClass.doAlert && themeClass.doAlert('This workspace is terminated by the administrator.');  //make sure doAlert is implemented
+            themeClass.doAlert('This workspace is terminated by the administrator.', false);
             
+            //play sound
+            if (window.canPlaySound) {
+                const audioElem = document.querySelector('#shutdownSnd');
+                audioElem && audioElem.play();
+            }
+
             //move to welcome route
             window.location.hash = 'welcome';
         }
@@ -261,6 +299,12 @@ function webRTCWorkspacesInitClient(themeClass) {
         () => {
             //move to welcome route
             window.location.hash = 'welcome';
+
+            //play sound
+            if (window.canPlaySound) {
+                const audioElem = document.querySelector('#shutdownSnd');
+                audioElem && audioElem.play();
+            }            
         }
     );
 

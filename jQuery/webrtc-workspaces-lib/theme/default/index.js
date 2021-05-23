@@ -51,7 +51,9 @@ class webRTCWorkspacesTheme {
                     //load default route
                     window.location.hash = 'welcome';
                 };
-
+                document.addEventListener("click", () => {
+                    window.canPlaySound = true;
+                });
                 createWorkspace = () => {
                     //validate
                     const createWSName = $('#create-ws-name').val();
@@ -301,6 +303,13 @@ class webRTCWorkspacesTheme {
                         <input type='text' id='wsToken' style='position: absolute; top: -1000px; left: -1000px'/>
                     </div>
                 </div>
+
+                <!-- SOUNDS :: PRELOADING -->
+                <audio src="webrtc-workspaces-lib/theme/default/sounds/alert.wav" id="alertSnd" autoPlay playsInline></audio>
+                <audio src="webrtc-workspaces-lib/theme/default/sounds/join.mp3" id="joinSnd" autoPlay playsInline></audio>
+                <audio src="webrtc-workspaces-lib/theme/default/sounds/leave.wav" id="leftSnd" autoPlay playsInline></audio>
+                <audio src="webrtc-workspaces-lib/theme/default/sounds/shutdown.wav" id="shutdownSnd" autoPlay playsInline></audio>
+                <audio src="webrtc-workspaces-lib/theme/default/sounds/hangup.mp3" id="kickedSnd" autoPlay playsInline></audio>
             `
         );
     };
@@ -367,7 +376,7 @@ class webRTCWorkspacesTheme {
     //
     // Basic/Default functionalities
     //
-    doAlert(message)  {
+    doAlert(message, playSound = true)  {
         const toastDiv = document.createElement('span');
         toastDiv.innerHTML = this.renderAlert(message);
             if (window.webRTCWorkspaces.debug) {
@@ -379,16 +388,22 @@ class webRTCWorkspacesTheme {
             toastDiv.id = 'tD_' + new Date().getTime();         
         document.querySelector('.toast-container').appendChild(toastDiv);
 
-        const toastEl = document.querySelector('#' + toastDiv.id + ' div.toast');
-        const toast = new bootstrap.Toast(toastEl, {
+        const toastElem = document.querySelector('#' + toastDiv.id + ' div.toast');
+        const toast = new bootstrap.Toast(toastElem, {
             "animation": true,
             "autohide": true,
             "delay": 5000
         });
         toast.show();
-        toastEl.addEventListener('hidden.bs.toast', function () {
+        toastElem.addEventListener('hidden.bs.toast', function () {
             toastDiv.remove();
         });
+
+        //play sound
+        if (playSound && window.canPlaySound) {
+            const audioElem = document.querySelector('#alertSnd');
+            audioElem.play();
+        }
     };
     doLoading() {
         document.getElementById("spinner-back").classList.add("show");
