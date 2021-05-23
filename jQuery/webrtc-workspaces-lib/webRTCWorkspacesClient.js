@@ -200,6 +200,24 @@ function webRTCWorkspacesInitClient(themeClass) {
         }
     );
 
+    //an attendee was kicked by admin
+    window.webRTCWorkspaces.registerCallback(
+        ['attendee-kicked'],
+        (attendee) => {
+            if (attendee.iWasKicked) {
+                themeClass.doAlert("You were kicked out by the admin.");
+                //move to welcome route
+                window.location.hash = 'welcome';
+            }
+            else {
+                themeClass.doAlert(attendee.name + " kicked out by the admin.");
+                //a video frame is removed - redraw to adapt the width & height
+                if (typeof redrawVideoFrames === "function")
+                    redrawVideoFrames();
+            }
+        }
+    );
+
     //an new workspace is created
     window.webRTCWorkspaces.registerCallback(
         ['workspace-created'],
@@ -269,6 +287,20 @@ function webRTCWorkspacesInitClient(themeClass) {
             themeClass.doAlert("Workspace if full! Cannot join.");
             //workspace is full -> reroute back to index page
             window.location.hash = 'welcome';
+        }
+    );
+
+    //handle mic/cam state changes
+    window.webRTCWorkspaces.registerCallback(
+        ['toggle-mic-state'],
+        (data) => {
+            !data.state ? $('#mic-off-' + data.attnd).show() : $('#mic-off-' + data.attnd).hide();
+        }
+    );
+    window.webRTCWorkspaces.registerCallback(
+        ['toggle-cam-state'],
+        (data) => {
+            !data.state ? $('#cam-off-' + data.attnd).show() : $('#cam-off-' + data.attnd).hide();
         }
     );
 }

@@ -62,14 +62,14 @@ class webRTCWorkspacesTheme {
                         $('#create-ws-name').focus();
                         return;
                     }
-                    if (createWSPin.length && createWSPin.length != 5) {
-                        alert('Please enter a 5 characters PIN.');
-                        $('#create-ws-pin').focus();
-                        return;
-                    }
                     if (!createAttndName.length) {
                         alert('Please enter your name.');
                         $('#create-attnd-name').focus();
+                        return;
+                    }
+                    if (createWSPin.length && createWSPin.length != 5) {
+                        alert('Please enter a 5 characters PIN.');
+                        $('#create-ws-pin').focus();
                         return;
                     }
 
@@ -79,6 +79,11 @@ class webRTCWorkspacesTheme {
                         createWSPin,
                         createAttndName
                     );
+
+                    //reset textfields
+                    $('#create-ws-name').val('');
+                    $('#create-attnd-name').val('');
+                    $('#create-ws-pin').val('');
                 };
                 joinWorkspace = () => {
                     //validate
@@ -90,14 +95,14 @@ class webRTCWorkspacesTheme {
                         $('#join-ws-token').focus();
                         return;
                     }
-                    if (joinWSPin.length && joinWSPin.length != 5) {
-                        alert('Please enter a 5 characters PIN.');
-                        $('#join-ws-pin').focus();
-                        return;
-                    }
                     if (!joinAttndName.length) {
                         alert('Please enter your name.');
                         $('#create-attnd-name').focus();
+                        return;
+                    }
+                    if (joinWSPin.length && joinWSPin.length != 5) {
+                        alert('Please enter a 5 characters PIN.');
+                        $('#join-ws-pin').focus();
                         return;
                     }
 
@@ -107,6 +112,11 @@ class webRTCWorkspacesTheme {
                         joinWSPin,
                         joinAttndName
                     );
+
+                    //reset textfields
+                    $('#join-ws-token').val('');
+                    $('#join-attnd-name').val('');
+                    $('#join-ws-pin').val('');
                 };
                 destroyWorkspace = () => {
                     if (window.webRTCWorkspaces.isOwner()) {
@@ -173,6 +183,12 @@ class webRTCWorkspacesTheme {
                 showCreateForm = () => {
                     $('#create-form').removeClass('hide');
                     $('#join-form').addClass('hide');
+                };
+
+                kickUser = (attndName, attndId) => {
+                    if (confirm(attndName + ': Kick this attendee out of this workspace?')) {
+                        window.webRTCWorkspaces.kickUser(attndName, attndId);
+                    }
                 };
             `
         );
@@ -298,7 +314,33 @@ class webRTCWorkspacesTheme {
                     autoPlay
                     playsInline
                 ></video>
-                <p class='video-frame-name'>${args.attendee.name} ${window.webRTCWorkspaces.isLocal(args.attendee.id) ? "(you)" : "<span id='video-frame-ringing-"+args.attendee.id+"' class='ringing-bell'><i class='fa fa-bell faa-ring animated'></i></span>"}</p>
+                <p class='video-frame-name'>
+                    ${
+                        (window.webRTCWorkspaces.isOwner() && !window.webRTCWorkspaces.isLocal(args.attendee.id))
+                        ?
+                        `<span onclick="kickUser('${args.attendee.name}','${args.attendee.id}');"><i class='fa fa-user-times text-danger'></i>&nbsp;</span>`
+                        :
+                        ""
+                    }
+                    ${args.attendee.name} 
+                    ${
+                        window.webRTCWorkspaces.isLocal(args.attendee.id) 
+                        ? 
+                        "(you)" 
+                        : 
+                        `<span id='video-frame-ringing-${args.attendee.id}' class='ringing-bell'><i class='fa fa-bell faa-ring animated'></i></span>`
+                    }
+                    ${
+                        !window.webRTCWorkspaces.isLocal(args.attendee.id) 
+                        ?
+                        `
+                            <i class='fas fa-microphone-slash animated text-danger hide' id='mic-off-${args.attendee.id}'></i>
+                            <i class='fas fa-video-slash animated text-danger hide' id='cam-off-${args.attendee.id}'></i>
+                        `
+                        :
+                        ""
+                    }
+                </p>
                 <div
                     id='${args.attendee.id}-video-frame:video-canvas'
                     class='video-frame-canvas'

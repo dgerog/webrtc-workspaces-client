@@ -365,10 +365,17 @@ class webRTCWorkspaces {
         //reset object(free resources)
         this._resetObject();
     };
-    kickUser(attnd) {
+    kickUser(attndName, attndId) {
         if (this.workspace.owner != this.attendee.id)
             return; //only owner can kick attendees
         
+        if (this.debug) {
+            console.log('Kicking User...');
+            console.log('Attendee ID: ' + attndId);
+            console.log('Attendee Name: ' + attndName);
+            console.log('--');
+        }
+
         //emit kick user event
         this.socket.emit(
             "kick",
@@ -377,7 +384,11 @@ class webRTCWorkspaces {
                     id: this.workspace.id
                 },
                 attendee: {
-                    id: attnd
+                    id: this.attendee.id
+                },                
+                kickedAttendee: {
+                    id: attndId,
+                    name: attndName
                 },
                 accessToken: this.accessToken,
             }
@@ -494,6 +505,20 @@ class webRTCWorkspaces {
         if (videoHolder) {
             videoHolder.srcObject.getAudioTracks()[0].enabled = state;
         }
+        //notify other participants
+        this.socket.emit(
+            "mic-toggle",
+            {
+                workspace: {
+                    id: this.workspace.id
+                },
+                accessToken: this.accessToken,
+                attendee: {
+                    id: attendeeID
+                },
+                state: state,
+            }
+        );
     };
     setCamState(state, attendeeID = null) {
         if (!attendeeID)
@@ -502,6 +527,20 @@ class webRTCWorkspaces {
         if (videoHolder) {
             videoHolder.srcObject.getVideoTracks()[0].enabled = state;
         }
+        //notify other participants
+        this.socket.emit(
+            "cam-toggle",
+            {
+                workspace: {
+                    id: this.workspace.id
+                },
+                accessToken: this.accessToken,
+                attendee: {
+                    id: attendeeID
+                },
+                state: state,
+            }
+        );        
     };
     getCamMode() {
         return(this.call.camMode);
@@ -936,6 +975,38 @@ class webRTCWorkspaces {
                     this._resetObject();
                 }
             })
+            //attendee kicked
+            .on("kicked", (data) => {
+                if (data.id != this.attendee.id) {
+                    //other attendee left
+                    this._removeAttendee(data.id);
+
+                    data.iWasKicked = false;
+
+                    if (this.debug) {
+                        console.log('Attendee kicked by admin...');
+                        console.log('Attendee ID: ' + data.id);
+                        console.log('Attendee Name: ' + data.name);
+                        console.log('--');
+                    }
+                }
+                else {
+                    //I have been kicked by host -> terminate & reset data
+                    this._clearAllData();
+
+                    //reset object(free resources)
+                    this._resetObject();
+
+                    data.iWasKicked = true;
+
+                    if (this.debug) {
+                        console.log('I was kicked by admin!');
+                    }
+                }
+                //call the registered callback (app specific)
+                this._consumeCallback("attendee-kicked", data);
+                this._consumePluginCallback("attendee-kicked", data);
+            })
             //acceess to workspace is granted
             .on("attendance-granted", (data) => {
                 this.workspace = data.workspace;
@@ -1162,6 +1233,30 @@ class webRTCWorkspaces {
                 //call the registered callback (app specific)
                 this._consumeCallback("workspace-is-full");
                 this._consumePluginCallback("workspace-is-full");
+            })
+            //handle mic/cam state toggle
+            .on("mic-toggle", (data) => {
+                if (this.debug) {
+                    console.log('Mic state toggle event by ' + data.attendee.id + ' / New state: ' + data.state);
+                }
+
+                //call the registered callback (app specific)
+                this._consumeCallback("toggle-mic-state", {
+                    attnd: data.attendee.id,
+                    state: data.state,
+                    accessToken: this.accessToken,
+                });
+            })
+            .on("cam-toggle", (data) => {
+                if (this.debug) {
+                    console.log('Cam state toggle event by ' + data.attendee.id + ' / New state: ' + data.state);
+                }
+
+                //call the registered callback (app specific)
+                this._consumeCallback("toggle-cam-state", {
+                    attnd: data.attendee.id,
+                    state: data.state,
+                });
             })
         ;
     };

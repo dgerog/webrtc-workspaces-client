@@ -78,6 +78,7 @@
   width: 90%;
   background: rgba(0, 0, 0, 0.2);
   padding: 3px;
+  z-index: 99999;
 }
 .video-frame-canvas{
   position: absolute;
