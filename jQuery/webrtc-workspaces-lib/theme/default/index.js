@@ -309,14 +309,14 @@ class webRTCWorkspacesTheme {
     renderAlert(message) {
         return(
             `
-                <div class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-autohise="true" data-bs-delay="5000" style="margin-bottom:7px;">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            ${message}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class='fa fa-bell faa-ring animated text-muted'></i>&nbsp;${message}
                     </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
+            </div>
             `
         );
     };
@@ -326,10 +326,26 @@ class webRTCWorkspacesTheme {
     // Basic/Default functionalities
     //
     doAlert(message)  {
-        const toast = document.createElement('span');
-            toast.innerHTML = this.renderAlert(message);
-        document.querySelector('.toast-container').appendChild(toast);
-        $('.toast').toast('show');
+        const toastDiv = document.createElement('span');
+        toastDiv.innerHTML = this.renderAlert(message);
+            if (window.webRTCWorkspaces.debug) {
+                console.log('Add toast notification...');
+                console.log(message);
+                console.log(toastDiv);
+                console.log('--');
+            }
+            toastDiv.id = 'tD_' + new Date().getTime();         
+        document.querySelector('.toast-container').appendChild(toastDiv);
+
+        const toastEl = document.querySelector('#' + toastDiv.id + ' div.toast');
+        const toast = new bootstrap.Toast(toastEl, {
+            "animation": true,
+            "autohide": false,
+        });
+        toast.show();
+        toastEl.addEventListener('hidden.bs.toast', function () {
+            toastDiv.remove();
+        });
     };
     doLoading() {
         document.getElementById("spinner-back").classList.add("show");

@@ -79,16 +79,12 @@ class webRTCWorkspaces {
         //in case of page refresh emit "leave" message
         window.onunload =() => {
             if (this.workspace && this.attendee) {
-                this.socket.emit(
-                    "leave",
-                    {
-                        workspace: {
-                            id: this.workspace.id
-                        },
-                        attendee: this.attendee,
-                        accessToken: this.accessToken,
-                    }
-                );
+                if (this.workspace.owner == this.attendee.id) {
+                    this.leaveWorkspace();
+                }
+                else {
+                    this.destroyWorkspace();
+                }
             }
         };
     };
@@ -363,6 +359,9 @@ class webRTCWorkspaces {
             }
         );
 
+        //clear local storage
+        this._clearAllData();
+
         //reset object(free resources)
         this._resetObject();
     };
@@ -630,6 +629,17 @@ class webRTCWorkspaces {
         this.attendee = this._retrieveData("attendee");
         this.accessToken = this._retrieveData("accessToken");
         
+        if (this.debug) {
+            console.log('webRTCWorkspace object reset...');
+            console.log('> Workspace:');
+            console.log(this.workspace);
+            console.log('> Attendee: ');
+            console.log(this.attendee);
+            console.log('> Access Token:' );
+            console.log(this.accessToken);
+            console.log('--');
+        }
+
         delete this.call;
 
         this.nonceSalt = this._uuid(10);
@@ -826,10 +836,8 @@ class webRTCWorkspaces {
                     console.log('--');
                 }
 
-                //update storage
-                this._deleteData("attendee");
-                this._deleteData("accessToken");
-                this._deleteData("workspace");
+                //clear local storage
+                this._clearAllData();
 
                 //reset object(free resources)
                 this._resetObject();
@@ -918,9 +926,7 @@ class webRTCWorkspaces {
                 }
                 else {
                     //I have been kicked by host -> terminate & reset data
-                    this._deleteData("attendee");
-                    this._deleteData("accessToken");
-                    this._deleteData("workspace");
+                    this._clearAllData();
 
                     //call the registered callback (app specific)
                     this._consumeCallback("workspace-left");
@@ -1233,6 +1239,9 @@ class webRTCWorkspaces {
     };
     _deleteData(keyword) {
         window.localStorage.removeItem(keyword);
+    };
+    _clearAllData() {
+        window.localStorage.clear();
     };
 
 

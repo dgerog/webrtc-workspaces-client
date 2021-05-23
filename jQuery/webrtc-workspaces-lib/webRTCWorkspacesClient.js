@@ -209,6 +209,10 @@ function webRTCWorkspacesInitClient(themeClass) {
             setTimeout(() => {
                 //set a delay to load the route - give some time for page rendering and then, start the call 
                 window.webRTCWorkspaces.startCall();
+
+                //reset mic & ca status to default (BOTH TRUE!!!!!)
+                themeClass.toggleMic && themeClass.toggleMic(true); //make sure toggleMic is implemented 
+                themeClass.toggleCam && themeClass.toggleCam(true); //make sure toggleCam is implemented
             }, 500);
         }
     );
@@ -226,9 +230,8 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['workspace-destroyed'],
         () => {
-            if (window.location.hash === 'welcome') {
-                themeClass.doAlert('This workspace is terminated by the administrator.');
-            }
+            themeClass.doAlert && themeClass.doAlert('This workspace is terminated by the administrator.');  //make sure doAlert is implemented
+            
             //move to welcome route
             window.location.hash = 'welcome';
         }
