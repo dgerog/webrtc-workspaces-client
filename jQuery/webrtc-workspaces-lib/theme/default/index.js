@@ -340,7 +340,8 @@ class webRTCWorkspacesTheme {
         const toastEl = document.querySelector('#' + toastDiv.id + ' div.toast');
         const toast = new bootstrap.Toast(toastEl, {
             "animation": true,
-            "autohide": false,
+            "autohide": true,
+            "delay": 5000
         });
         toast.show();
         toastEl.addEventListener('hidden.bs.toast', function () {
