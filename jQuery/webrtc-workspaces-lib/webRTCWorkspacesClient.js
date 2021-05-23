@@ -67,7 +67,7 @@ function webRTCWorkspacesInitClient(themeClass) {
                 console.log('Create New Video Object :' + (vf ? 'NO' : 'YES'));
                 console.log('Attendee Name:' + args.attendee.name);
                 console.log(args);
-                console.log('--------------------------------');
+                console.log('--');
             }
             if (vf) {
                 //exists ~ simply return current instance
@@ -184,15 +184,6 @@ function webRTCWorkspacesInitClient(themeClass) {
             //a new video frame is created - redraw to adapt the width & height
             if (typeof redrawVideoFrames === "function")
                 redrawVideoFrames();
-            if (window.webRTCWorkspaces.debug) {
-                const host = window.webRTCWorkspaces.getHost();
-                const local = window.webRTCWorkspaces.getLocal();
-                console.log('Attendee Joined the workspace...');
-                console.log('Host    : ' + host.name);
-                console.log('Local   : ' + local.name);
-                console.log('Attendee: ' + attendee.name);
-                console.log('--------------------------------');
-            }
         }
     );
 
@@ -203,16 +194,7 @@ function webRTCWorkspacesInitClient(themeClass) {
             themeClass.doAlert(attendee.name + " left the workspace.");
             //a video frame is removed - redraw to adapt the width & height
             if (typeof redrawVideoFrames === "function")
-                redrawVideoFrames();
-            if (window.webRTCWorkspaces.debug) {
-                const host = window.webRTCWorkspaces.getHost();
-                const local = window.webRTCWorkspaces.getLocal();
-                console.log('Attendee Left the workspace...');
-                console.log('Host    : ' + host.name);
-                console.log('Local   : ' + local.name);
-                console.log('Attendee: ' + attendee.name);
-                console.log('--------------------------------');
-            }                
+                redrawVideoFrames();               
         }
     );
 
@@ -233,11 +215,6 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['workspace-joined'],
         (data) => {
-            if (window.webRTCWorkspaces.debug) {
-                console.log('Workspace Joined...');
-                console.log('--------------------------------');
-            }
-
             //move to workspace route
             window.location.hash = 'workspace';
         }
@@ -247,10 +224,6 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['workspace-destroyed'],
         () => {
-            if (window.webRTCWorkspaces.debug) {
-                console.log('Workspace Destroyed...');
-                console.log('--------------------------------');
-            }
             if (window.location.hash === 'welcome') {
                 themeClass.doAlert('This workspace is terminated by the administrator.');
             }
@@ -263,10 +236,6 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['workspace-left'],
         () => {
-            if (window.webRTCWorkspaces.debug) {
-                console.log('Workspace Left...');
-                console.log('--------------------------------');
-            }
             //move to welcome route
             window.location.hash = 'welcome';
         }
@@ -292,10 +261,6 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.webRTCWorkspaces.registerCallback(
         ['workspace-is-full'],
         () => {
-            if (window.webRTCWorkspaces.debug) {
-                console.log('Workspace is Full...');
-                console.log('--------------------------------');
-            }          
             themeClass.doAlert("Workspace if full! Cannot join.");
             //workspace is full -> reroute back to index page
             window.location.hash = 'welcome';

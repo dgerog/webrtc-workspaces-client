@@ -794,6 +794,15 @@ class webRTCWorkspaces {
             })
             //workspace created
             .on("created", (data) => {
+                if (this.debug) {
+                    console.log('New workspace created...');
+                    console.log('I am: ' + data.attendee.name);
+                    console.log('Workspace Name: ' + data.workspace.name);
+                    console.log('Workspace Atttendees: ' + data.workspace.attendees);
+                    console.log(data);
+                    console.log('--');
+                }
+                                
                 //update local instance
                 this.workspace = data.workspace;
                 this.attendee = data.attendee;
@@ -812,6 +821,11 @@ class webRTCWorkspaces {
             })
             //workspace closed
             .on("destroyed", () => {
+                if (this.debug) {
+                    console.log('Current workspace destroyed...');
+                    console.log('--');
+                }
+
                 //update storage
                 this._deleteData("attendee");
                 this._deleteData("accessToken");
@@ -827,6 +841,12 @@ class webRTCWorkspaces {
                 this._consumePluginCallback("workspace-destroyed");
             })
             .on("attendees", (data) => {
+                if (this.debug) {
+                    console.log('Get workspace attendees...');
+                    console.log(data);
+                    console.log('--');
+                }
+
                 this.attendees = {};
                 for(let attnd in data.attendees) {
                     this._addAttendee(data.attendees[attnd]);
@@ -840,14 +860,18 @@ class webRTCWorkspaces {
                 this._consumeCallback("attendee-joined", data);
                 this._consumePluginCallback("attendee-joined", data);
 
+                if (thiss.debug) {
+                    console.log('Attendee Joined the workspace...');
+                    console.log('I am: ' + this.attendee.name);
+                    console.log('New Attendee: ' + data.name);
+                    console.log('--');
+                }
+
                 //if the attendee is the owner & is on call invite the new attendee to join
                 //if (this.isOnCall() && this.isOwner()) {
                 if (this.isOnCall()) {
                     if (this.debug) {
-                        console.log('I am on call starting a P2P call with new attendee...');
-                        console.log('I am: ' + this.attendee.name);
-                        console.log('New Attendee: ' + data.name);
-                        console.log('------------------------------------------------------------------')
+                        console.log('I am on call... Starting a P2P call with new attendee...');
                     }
                     const localVideo = this._getVideoObjectDOM(this.attendee.id);
                     this._setupVideoP2PConnection(
@@ -884,6 +908,13 @@ class webRTCWorkspaces {
                     //call the registered callback (app specific)
                     this._consumeCallback("attendee-left", data);
                     this._consumePluginCallback("attendee-left", data);
+
+                    if (this.debug) {
+                        console.log('Attendee Left the workspace...');
+                        console.log('I am: ' + this.attendee.name);
+                        console.log('Attendee Left: ' + data.name);
+                        console.log('--');
+                    } 
                 }
                 else {
                     //I have been kicked by host -> terminate & reset data
@@ -947,7 +978,7 @@ class webRTCWorkspaces {
                     if (this.debug) {
                         console.log('A call already found for this workspace. Restart...');
                         console.log('Call ID: ' + data.call                              );
-                        console.log('---------------------------------------------------');
+                        console.log('--');
                     }
 
                     this.call = {
@@ -963,7 +994,7 @@ class webRTCWorkspaces {
                     console.log('RING event received...');
                     console.log('Am I on Call? - ' + (this.isOnCall() ? 'YES' : 'NO'));
                     console.log(data);
-                    console.log('----------------------------------------');
+                    console.log('--');
                 }
 
                 if (!this.isOnCall()) {
@@ -997,7 +1028,7 @@ class webRTCWorkspaces {
                                     console.log('I am emitting now an ANSWER event as a response to RING event...');
                                     console.log('I am ' + this.attendee.name);
                                     console.log('Caller ' + data.caller.name);
-                                    console.log('----------------------------------------');
+                                    console.log('--');
                                 }                                
                                 this.socket.emit(
                                     "answer",
@@ -1059,7 +1090,7 @@ class webRTCWorkspaces {
                 if (this.debug) {
                     console.log('ANSWER event received...');
                     console.log(data);
-                    console.log('----------------------------------------');
+                    console.log('--');
                 }
                 if (this.isOnCall(data.call.id)) { //make sure to tackle late received messages(async) - if not onCall ignore
                     //complete p2p negotation - call answered -> set the remote description(for those attendees replied)
@@ -1118,6 +1149,10 @@ class webRTCWorkspaces {
             })
             //attendee is on another call
             .on("full", () => {
+                if (this.debug) {
+                    console.log('Workspace is full...');
+                }
+
                 //call the registered callback (app specific)
                 this._consumeCallback("workspace-is-full");
                 this._consumePluginCallback("workspace-is-full");

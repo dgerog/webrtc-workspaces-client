@@ -129,7 +129,7 @@ class webRTCWorkspacesTheme {
                     if (window.webRTCWorkspaces.debug) {
                         console.log('Workspace Invitation URL');
                         console.log($('#wsToken').val());
-                        console.log('--------------------------------------------------------------------------------------');
+                        console.log('--');
                     }                    
                     alert("Workspace access URL copied. Share it with your favorite app.");
                 };
@@ -334,7 +334,7 @@ function redrawVideoFrames() {
     if (window.webRTCWorkspaces.debug) {
         console.log('Video Frame Canvas Redraw...');
         console.log(videoElems);
-        console.log('--------------------------------');
+        console.log('--');
     }
 
     videoElems.forEach((vElem) => {
