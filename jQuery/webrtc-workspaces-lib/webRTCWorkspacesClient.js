@@ -7,6 +7,8 @@ function webRTCWorkspacesInitClient(themeClass) {
     window.addEventListener('hashchange', () => { 
         const nextRoute = window.location.hash.substr(1);
         const currentRouteDOM = document.querySelector(".active-route");
+        if (!nextRoute || !currentRouteDOM)
+            return;
         if (nextRoute == currentRouteDOM.id) //if navigate to the same route - return
             return;
         const nextRouteDOM = document.getElementById(nextRoute);

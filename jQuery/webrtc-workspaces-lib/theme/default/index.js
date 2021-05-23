@@ -43,8 +43,10 @@ class webRTCWorkspacesTheme {
                     //initialize workspace access token (if any)
                     const urlParams = new URLSearchParams(window.location.search);
                     const wsToken = urlParams.get('ws');
-                    if (wsToken)
+                    if (wsToken) {
                         $('#join-ws-token').val(wsToken);
+                        showJoinForm();
+                    }
 
                     //load default route
                     window.location.hash = 'welcome';
@@ -163,6 +165,15 @@ class webRTCWorkspacesTheme {
                         $('#btn-call-cam-off').removeClass('hide');
                     }
                 };
+
+                showJoinForm = () => {
+                    $('#create-form').addClass('hide');
+                    $('#join-form').removeClass('hide');
+                };
+                showCreateForm = () => {
+                    $('#create-form').removeClass('hide');
+                    $('#join-form').addClass('hide');
+                };
             `
         );
     };
@@ -189,51 +200,59 @@ class webRTCWorkspacesTheme {
                         </div>
                         <br/>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col" id='create-form'>
                                 <div class="card">
                                     <div class="card-header">Create New Workspace</div>
                                     <div class="card-body">
                                         <form name='create-ws' method='post' action='#' onsubmit='return(false);'>
                                             <div class="form-group">
-                                                <label for='create-ws-name'>Workspace Name</label>
+                                                <label for='create-ws-name'>Workspace Name <span class='text-danger'>*</span></label>
                                                 <input class="form-control" type='text' name='create-ws-name' id='create-ws-name' minlength='2' manlength='50' required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for='create-attnd-name'>Your Name <span class='text-danger'>*</span></label>
+                                                <input class="form-control" type='text' name='create-attnd-name' id='create-attnd-name' minlength='2' manlength='50' value='Untitled Attendee' required/>
                                             </div>
                                             <div class="form-group">
                                                 <label for='create-ws-pin'>Workspace PIN</label>
                                                 <input class="form-control" type='text' name='create-ws-pin' id='create-ws-pin'  minlength='0' manlength='5'/>
-                                            </div>                
+                                            </div>                                            
                                             <div class="form-group">
-                                                <label for='create-attnd-name'>Your Name</label>
-                                                <input class="form-control" type='text' name='create-attnd-name' id='create-attnd-name' minlength='2' manlength='50' value='Untitled Attendee' required/>
+                                                <small class='text-danger'>* Required</small>
                                             </div>
-                                            <br/>
                                             <div class="form-group text-center">
-                                                <button onclick='createWorkspace()' class='btn btn-outline-secondary'>Create Workspace</button>
+                                                <button type="button" onclick='createWorkspace()' class='btn btn-outline-secondary'>Create Workspace</button>
+                                                <br/><br/>
+                                                <button type="button" class="btn btn-link" onclick="showJoinForm()">Have an access token? Click here to join a workspase...</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col hide" id='join-form'>
                                 <div class="card">
                                     <div class="card-header">Join a Workspace</div>
                                     <div class="card-body">
                                         <form name='join-ws' method='post' action='#' onsubmit='return(false);'>
                                             <div class="form-group">
-                                                <label for='join-ws-token'>Workspace Token</label>
+                                                <label for='join-ws-token'>Workspace Token <span class='text-danger'>*</span></label>
                                                 <input class="form-control" type='text' name='join-ws-token' id='join-ws-token' minlength='10' manlength='150' required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for='join-attnd-name'>Your Name <span class='text-danger'>*</span></label>
+                                                <input class="form-control" type='text' name='join-attnd-name' id='join-attnd-name' minlength='2' manlength='50' value='Untitled Attendee' required/>
                                             </div>
                                             <div class="form-group">
                                                 <label for='join-ws-pin'>Workspace PIN</label>
                                                 <input class="form-control" type='text' name='join-ws-pin' id='join-ws-pin'  minlength='0' manlength='5'/>
                                             </div>
                                             <div class="form-group">
-                                                <label for='join-attnd-name'>Your Name</label>
-                                                <input class="form-control" type='text' name='join-attnd-name' id='join-attnd-name' minlength='2' manlength='50' value='Untitled Attendee' required/>
+                                                <small class='text-danger'>* Required</small>
                                             </div>
-                                            <br/>
                                             <div class="form-group text-center">
-                                                <button onclick='joinWorkspace()' class='btn btn-outline-secondary'>Join Workspace</button>
+                                                <button type="button" onclick='joinWorkspace()' class='btn btn-outline-secondary'>Join Workspace</button>
+                                                <br/><br/>
+                                                <button type="button" class="btn btn-link" onclick="showCreateForm()">Click here to create a new workspase...</button>
                                             </div>
                                         </form>
                                     </div>
