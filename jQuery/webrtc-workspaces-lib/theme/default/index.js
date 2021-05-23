@@ -279,7 +279,7 @@ class webRTCWorkspacesTheme {
                         </div>
                     </div>
                     <div class="container-fluid text-center" style="position:fixed; background-color: rgba(0, 0, 0, 0.05); bottom:0;">
-                        Crafted with <span class='text-danger'>&#10084;</span> &nbsp; by DpG
+                        Crafted with <span class='text-danger'>&#10084;</span> &nbsp; by DpG - webRTCWorkspaces is an open source project. Find more details at my <a href='https://github.com/dgerog/webrtc-workspaces-client' target='_blank'>official github repo</a>.
                     </div>
                 </div>
                 
