@@ -207,15 +207,15 @@ class webRTCWorkspacesTheme {
                                         <form name='create-ws' method='post' action='#' onsubmit='return(false);'>
                                             <div class="form-group">
                                                 <label for='create-ws-name'>Workspace Name <span class='text-danger'>*</span></label>
-                                                <input class="form-control" type='text' name='create-ws-name' id='create-ws-name' minlength='2' manlength='50' required/>
+                                                <input class="form-control" type='text' name='create-ws-name' id='create-ws-name' minlength='2' maxlength='50' required/>
                                             </div>
                                             <div class="form-group">
                                                 <label for='create-attnd-name'>Your Name <span class='text-danger'>*</span></label>
-                                                <input class="form-control" type='text' name='create-attnd-name' id='create-attnd-name' minlength='2' manlength='50' value='Untitled Attendee' required/>
+                                                <input class="form-control" type='text' name='create-attnd-name' id='create-attnd-name' minlength='2' maxlength='50' value='Untitled Attendee' required/>
                                             </div>
                                             <div class="form-group">
                                                 <label for='create-ws-pin'>Workspace PIN</label>
-                                                <input class="form-control" type='text' name='create-ws-pin' id='create-ws-pin'  minlength='0' manlength='5'/>
+                                                <input class="form-control" type='text' name='create-ws-pin' id='create-ws-pin'  minlength='0' maxlength='5'/>
                                             </div>                                            
                                             <div class="form-group">
                                                 <small class='text-danger'>* Required</small>
@@ -236,15 +236,15 @@ class webRTCWorkspacesTheme {
                                         <form name='join-ws' method='post' action='#' onsubmit='return(false);'>
                                             <div class="form-group">
                                                 <label for='join-ws-token'>Workspace Token <span class='text-danger'>*</span></label>
-                                                <input class="form-control" type='text' name='join-ws-token' id='join-ws-token' minlength='10' manlength='150' required/>
+                                                <input class="form-control" type='text' name='join-ws-token' id='join-ws-token' minlength='10' maxlength='150' required/>
                                             </div>
                                             <div class="form-group">
                                                 <label for='join-attnd-name'>Your Name <span class='text-danger'>*</span></label>
-                                                <input class="form-control" type='text' name='join-attnd-name' id='join-attnd-name' minlength='2' manlength='50' value='Untitled Attendee' required/>
+                                                <input class="form-control" type='text' name='join-attnd-name' id='join-attnd-name' minlength='2' maxlength='50' value='Untitled Attendee' required/>
                                             </div>
                                             <div class="form-group">
                                                 <label for='join-ws-pin'>Workspace PIN</label>
-                                                <input class="form-control" type='text' name='join-ws-pin' id='join-ws-pin'  minlength='0' manlength='5'/>
+                                                <input class="form-control" type='text' name='join-ws-pin' id='join-ws-pin'  minlength='0' maxlength='5'/>
                                             </div>
                                             <div class="form-group">
                                                 <small class='text-danger'>* Required</small>
