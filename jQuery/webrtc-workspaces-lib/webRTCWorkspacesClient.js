@@ -63,7 +63,7 @@ function webRTCWorkspacesInitClient(themeClass) {
             //               hold ALL video frames.
             //RETURNS an object with the new video object
             //check if already created ~ in that case simply return current DOM object
-            let vf = document.querySelector('#' + args.attendee.id + '-video-frame\\:video-object');
+            let vf = document.querySelector('#' + args.attendee.id + '-video-frame-video-object');
             if (window.webRTCWorkspaces.debug) {
                 console.log('Video Frame Renderer Called...');
                 console.log('Create New Video Object :' + (vf ? 'NO' : 'YES'));
@@ -87,7 +87,7 @@ function webRTCWorkspacesInitClient(themeClass) {
                 if (typeof redrawVideoFrames === "function")
                     redrawVideoFrames();
 
-                return (document.querySelector('#' + args.attendee.id + '-video-frame\\:video-object'));
+                return (document.querySelector('#' + args.attendee.id + '-video-frame-video-object'));
             }
         }
     );
@@ -345,6 +345,8 @@ function webRTCWorkspacesInitClient(themeClass) {
         ['toggle-cam-state'],
         (data) => {
             !data.state ? $('#cam-off-' + data.attnd).show() : $('#cam-off-' + data.attnd).hide();
+            //handle video element
+            data.state ? $('#' + data.attnd + "-video-frame-video-object").removeClass('hide') : $('#' + data.attnd + "-video-frame-video-object").addClass('hide');
         }
     );
 }

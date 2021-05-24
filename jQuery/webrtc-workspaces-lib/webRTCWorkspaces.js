@@ -1348,10 +1348,10 @@ class webRTCWorkspaces {
         return(document.getElementById(`${attendeeID}-video-frame`));
     };
     _getVideoCanvasDOM(attendeeID) {
-        return(document.querySelector(`#${attendeeID}-video-frame\\:video-canvas`));
+        return(document.querySelector(`#${attendeeID}-video-frame-video-canvas`));
     };
     _getVideoObjectDOM(attendeeID) {
-        return(document.querySelector(`#${attendeeID}-video-frame\\:video-object`));
+        return(document.querySelector(`#${attendeeID}-video-frame-video-object`));
     };
     _createVideoFrame(attendee) {
         //create a video frame(DOM - use callback renderer) to hold the video stream 

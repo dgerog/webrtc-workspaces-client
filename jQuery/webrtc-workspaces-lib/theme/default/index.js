@@ -165,16 +165,19 @@ class webRTCWorkspacesTheme {
 
                 toggleCam = (state) => {
                     if (window.webRTCWorkspaces.debug) {
-                        console.log('Camera toggle for local. New state is ' + (state ? 'ON' : 'OFF'));
+                        console.log('New state is ' + (state ? 'ON' : 'OFF'));
                     }
+                    const local = window.webRTCWorkspaces.getLocal();
                     window.webRTCWorkspaces.setCamState(state);
                     if (state) {
                         $('#btn-call-cam-on').removeClass('hide');
                         $('#btn-call-cam-off').addClass('hide');
+                        $('#' + local.id + "-video-frame-video-object").removeClass('hide');
                     }
                     else {
                         $('#btn-call-cam-on').addClass('hide');
                         $('#btn-call-cam-off').removeClass('hide');
+                        $('#' + local.id + "-video-frame-video-object").addClass('hide');
                     }
                 };
 
@@ -317,7 +320,7 @@ class webRTCWorkspacesTheme {
         return (
             `
                 <video
-                    id='${args.attendee.id}-video-frame:video-object'
+                    id='${args.attendee.id}-video-frame-video-object'
                     ${args.muteState ? 'muted' : ''}
                     class='video-frame-video'
                     autoPlay
@@ -351,7 +354,7 @@ class webRTCWorkspacesTheme {
                     }
                 </p>
                 <div
-                    id='${args.attendee.id}-video-frame:video-canvas'
+                    id='${args.attendee.id}-video-frame-video-canvas'
                     class='video-frame-canvas'
                 ></div>            
             `
