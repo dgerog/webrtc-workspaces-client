@@ -544,7 +544,11 @@ class webRTCWorkspaces {
     };
     getCamMode() {
         return(this.call.camMode);
-    }
+    };
+    canSwitchCamera() {
+        const mediaSuports = navigator.mediaDevices.getSupportedConstraints();
+        return (mediaSuports['facingMode'] && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    };
     switchCam() {
         const mediaSuports = navigator.mediaDevices.getSupportedConstraints();
         if (!mediaSuports['facingMode'])
@@ -567,15 +571,16 @@ class webRTCWorkspaces {
 				.then((mediaStream) => {
 					//1. stop current streams
 					videoHolder.srcObject.getTracks().forEach(track => {track.stop();});
-
+ 
 					//2. attach new stream
 					videoHolder.srcObject = mediaStream;
 
 					//3. add new stream tracks
 					const localVideoTrack = mediaStream.getVideoTracks()[0];
+                        localVideoTrack.enabled = true;
 					for (let attnd in this.attendees) {
 						let sender = this.attendees[attnd].videoP2PConn.getSenders().find((s) => {
-							return (s.track.kind == videoTrack.kind);
+							return (s.track.kind == localVideoTrack.kind);
 						});
 						sender.replaceTrack(localVideoTrack);
 					}
@@ -593,9 +598,10 @@ class webRTCWorkspaces {
 
 						//3. add new stream tracks
 						const localVideoTrack = mediaStream.getVideoTracks()[0];
+                            localVideoTrack.enabled = true;
 						for (let attnd in this.attendees) {
 							let sender = this.attendees[attnd].videoP2PConn.getSenders().find((s) => {
-								return (s.track.kind == videoTrack.kind);
+								return (s.track.kind == localVideoTrack.kind);
 							});
 							sender.replaceTrack(localVideoTrack);
 						}
@@ -1469,7 +1475,7 @@ class webRTCWorkspaces {
                 }
             };
         this.attendees[attendeeID].videoP2PConn
-            .ontrack =(evt) => {
+            .ontrack = (evt) => {
                 //attach video DOM to remote video streaming
                 const videoHolder = this._getVideoObjectDOM(attendeeID); //videoHolder = remote video
                 if (videoHolder.srcObject)
@@ -1486,7 +1492,7 @@ class webRTCWorkspaces {
                             //restart negotiation with the peer => Offer(only the caller)
                             this._setNegotiationState(
                                 attendeeID,
-                               (desc) => {
+                                (desc) => {
                                     //emit new negotitation
                                     this.socket.emit(
                                         "negotiation", 

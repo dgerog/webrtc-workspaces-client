@@ -197,6 +197,10 @@ class webRTCWorkspacesTheme {
                     }
                 };
 
+                switchCam = () => {
+                    window.webRTCWorkspaces.switchCam();
+                };
+
                 _createRandomNames = () => {
                     /* 
                         Thanks to Thomas Konings for this funny name generator
@@ -355,6 +359,13 @@ class webRTCWorkspacesTheme {
                         (window.webRTCWorkspaces.isOwner() && !window.webRTCWorkspaces.isLocal(args.attendee.id))
                         ?
                         `<span onclick="kickUser('${args.attendee.name}','${args.attendee.id}');"><i class='fa fa-user-times text-danger'></i>&nbsp;</span>`
+                        :
+                        ""
+                    }
+                    ${
+                        (window.webRTCWorkspaces.isLocal(args.attendee.id) && window.webRTCWorkspaces.canSwitchCamera())
+                        ?
+                        `<span onclick="switchCam();"><i class='fas fa-sync text-white'></i>&nbsp;</span>`
                         :
                         ""
                     }
