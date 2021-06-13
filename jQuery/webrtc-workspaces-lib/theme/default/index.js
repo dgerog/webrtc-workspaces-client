@@ -350,7 +350,7 @@ class webRTCWorkspacesTheme {
                 <video
                     id='${args.attendee.id}-video-frame-video-object'
                     ${args.muteState ? 'muted' : ''}
-                    class='video-frame-video'
+                    class='video-frame-video ${window.webRTCWorkspaces.isLocal(args.attendee.id) ? 'video-flip' : ''}'
                     autoPlay
                     playsInline
                 ></video>
